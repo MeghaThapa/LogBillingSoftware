@@ -9,7 +9,7 @@ class UserController extends Controller
     public function index()
     {
        $users=User:: get(['id','name','email','role','created_at']);
-       
+
         return view('user.index',['users'=>$users]);
     }
     public function add()

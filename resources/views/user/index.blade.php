@@ -21,7 +21,7 @@
             DataTable Example
         </div>
         <div class="card-body">
-            <table id="datatablesSimple">
+            <table class="table" id="datatablesSimple">
                 <thead>
                     <tr>
                         <th>S.N</th>
@@ -136,7 +136,7 @@
                             "id":dlt_id
                         },
                         success: function(data) {
-                            console.log(data);
+                            //console.log(data);
                             swal("Poof! Your data has been deleted!", {
                             icon: "success",
                         }).then((willDelete) => {

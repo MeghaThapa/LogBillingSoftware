@@ -13,6 +13,7 @@
       <label for="validationCustom01" class="form-label">Name</label>
       <input type="text" class="form-control" name="name" id="validationCustom01" required>
       <div class="invalid-feedback">
+        
         Please fill your name!
       </div>
     </div>
