@@ -44,9 +44,9 @@ class Purchase extends Model
     $purchase->save();
 
    } 
-   public function supplier(){
-       return $this->belongsTo(Supplier::class);
-   }
+    public function supplier(){
+        return $this->belongsTo(Supplier::class);
+    }
    public function purchaseItem(){
     return $this->hasMany(PurchaseItem::class,'purchase_id')->select('id','quantity','rate','amount','discount_percent','discount_amount','product_id','purchase_id');
 }

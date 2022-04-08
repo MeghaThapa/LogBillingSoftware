@@ -25,6 +25,8 @@ class CreateSettingsTable extends Migration
             $table->unsignedBigInteger('sales_return_bill_number')->nullable();
             $table->unsignedBigInteger('purchase_bill_number')->nullable();
             $table->unsignedBigInteger('purchase_return_bill_number')->nullable();
+            $table->unsignedBigInteger('order_bill_no')->nullable();
+
             // $table->boolean('use_expire_date')->nullable();
             $table->boolean('show_discount')->nullable();
             $table->boolean('show_balance')->nullable();

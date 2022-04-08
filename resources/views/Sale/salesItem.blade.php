@@ -7,7 +7,7 @@
     
         <div class="row">
             <div class="col-md-3">
-                <label style="font-weight:bold;font-size:25px;font-family: 'Fredoka', sans-serif;">PURCHASE INVOICE </label>
+                <label style="font-weight:bold;font-size:25px;font-family: 'Fredoka', sans-serif;">SALES INVOICE </label>
             </div>
             <div class="col-md-6"></div>
           
@@ -25,19 +25,19 @@
 <div class="row">
     <div class="col-md-4">
         <label class="fw-bold">
-            BILL FROM :
+            BILL TO :
         </label>
-        {{$purchase->name}}
+        {{$sales->name}}
         <br/>
         <label class="fw-bold">
             ADDRESS:
         </label>
-        {{ $purchase->address }}
+        {{ $sales->address }}
         <br/>
         <label class="fw-bold">
             INVOICE NUMBER:
         </label>
-        {{ $purchase->invoice_number }}
+        {{ $sales->invoice_number }}
         <br/>
     </div>      
 <div class="col-md-4"></div>
@@ -45,26 +45,44 @@
     <label class="fw-bold">
         BILL DATE: 
     </label>
-    {{ $purchase->bill_date }}
+    {{ $sales->sales_date }}
     <br/>
     <label class="fw-bold">
         TRANSACTION DATE:
     </label>
-    {{ $purchase->transaction_date }}
+    {{ $sales->transaction_date }}
     <br/>
 
 
 </div>
 </div>
 <br>
-@if($errors->any())
-<div class="alert alert-danger" role="alert">
-@foreach($errors->all() as $error)
-<li>{{ $error }}</li>
-@endforeach
-</div>
-@endif
-<form action={{route('purchaseItem.saveData',['id'=>$purchase->id ]) }} class="needs-validation" method="POST" novalidate>
+@if ($errors->any())
+    <div class="alert alert-danger" role="alert">
+
+        @foreach ($errors->all() as $err)
+
+        <li style="color:red">{{$err}}</li>
+        @endforeach
+
+    </div>
+    @endif
+    {{-- Error on repeated product --}}
+    <div class="row">
+        <div class="col-md">
+            @if (Session::has('fail'))
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (Session::get('fail') as $session)
+                    <li>{{$session}}</li>
+                    @endforeach
+                    {{-- <li>{!! \Session::get('fail') !!}</li> --}}
+                </ul>
+            </div>
+            @endif
+        </div>
+    </div>
+<form  action="{{ route('SalesItem.save',['id'=>$sales->id]) }}" class="needs-validation" method="POST" novalidate>
     @csrf
     
     <div class="row">  
@@ -82,6 +100,12 @@
               </div>
             </div>
         </div>
+        <div class="col-md-3" id="stockDiv" style="margin-top:8px;display:none" >
+            <label for="" style="font-weight:bold">Stock</label>
+            <select name="stock_id" id="stockDetails" class="form-select">
+
+            </select>
+        </div>
         <div class="col-md-2">
             {{-- <div class="label fw-bold">Quantity</div>  --}}
             <label for="validationQuantity" class="form-label fw-bold">Quantity</label> 
@@ -93,25 +117,25 @@
         </div>
         <div class="col-md-2">
             <label for="validationRate" class="form-label fw-bold">Rate</label> 
-            <input type="number" name="rate" id="validationRate"  class="form-control" required/>
+            <input type="number" name="rate" id="validationRate"  class="form-control" />
             <div class="invalid-feedback">
                 Please enter rate!!
               </div>
         </div>
-        <div class="col-md-2">
+        {{-- <div class="col-md-2">
             <label for="validationDiscount" class="form-label fw-bold" >Discount %</label> 
             <input type="number" name="discountP" id="disPer" class="form-control" />
            
-        </div>
+        </div> --}}
         <div class="col-md-3">
-            <label for="validationDiscountA" class="form-label fw-bold ">Discount Amount</label> 
+            <label for="validationDiscountA" class="form-label fw-bold ">Discount per Item</label> 
             <input type="number" name="discountA"  id="DiscountA"  class="form-control" />
         </div>
-        <div class="col-md-3">
+        {{-- <div class="col-md-3">
             <label for="sp" class="form-label fw-bold ">Selling Amount</label> 
             <input type="number" name="spA"  id="sp"  class="form-control" />
         </div>
-        
+         --}}
     <div class="row mt-3">
         <div class="col-md-5"></div>
         <div class="col-md-2">   <button type="submit" class="btn btn-primary">Submit</button></div>
@@ -142,9 +166,6 @@
                 Amount
             </th>
             <th>
-                Discount %
-            </th>
-            <th>
                 Discount Amount
             </th>
             <th>
@@ -156,7 +177,7 @@
         @php
             $i=0;
         @endphp
-        @foreach ($purchaseItem as $row )
+        @foreach ($salesItem as $row )
                 <tr>
                     <td>{{ ++$i }}</td>
                     <td>{{ $row->name }}</td>
@@ -164,14 +185,14 @@
                     <td>{{ $row->quantity }}</td>
                     <td>{{ $row->rate }}</td>
                     <td>{{ $row->amount }}</td>
-                    <td>{{ $row->discount_percent }}</td>
+                    
                     <td>{{ $row->discount_amount }}</td>
                     <td>
-                     <a id="{{$row->id}}" class="purchaseItemE">
+                     <a id="{{$row->id}}" class="salesItemE">
                          <i class="fas fa-user-edit fa-lg "></i>
                      </a>
                 &#160
-            <a class="dltItem" id="{{ $row->id }}">
+            <a class="dltSales" id="{{ $row->id }}">
                 <i class="fas fa-trash-alt fa-lg">  </i>
             </a>
                     </td>
@@ -185,17 +206,17 @@
             <table>
                 <tr>
                     <td class="fw-bold">Total Amount:</td>
-                    <td class="fw-bold">Rs.{{ $purchaseItem->sum('amount') }}</td>  
+                    <td class="fw-bold">Rs.{{ $salesItem->sum('amount') }}</td>  
                 </tr>
                
                 <tr>
                     <td class="fw-bold"> Total Discount:</td>
-                   <td class="fw-bold">Rs.{{ $purchaseItem->sum('discount_amount') }}</td>
+                   <td class="fw-bold">Rs.{{ $salesItem->sum('discount_amount') }}</td>
                 </tr>
                 
                 <tr>
                     <td class="fw-bold"> Payable Amount:</td>
-                   <td class="fw-bold">Rs.{{ $purchaseItem->sum('amount') - $purchaseItem->sum('discount_amount') }}</td>
+                   <td class="fw-bold">Rs.{{ $salesItem->sum('amount') - $salesItem->sum('discount_amount') }}</td>
                 </tr>
             </table>
         </div>
@@ -203,19 +224,19 @@
 </div>
 
 {{-- edit modal --}}
-<div class="modal fade" id="purchaseItemEdit"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="salesItemEdit"  aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
             
           <h5 class="modal-title" id="exampleModalLabel">
-         Edit Purchase Items
+         Edit Sales Items
         </h5>
     
     
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="{{route('purchaseItem.updateSave') }}" method="POST">
+        <form action="{{ route('SalesItem.editSave') }}" method="POST">
             @csrf
            
         <div class="modal-body">
@@ -227,16 +248,24 @@
                    <label for="nameV" class="form-label fw-bold">Product Name</label>
                 </div>
                 <div class="col-md-8">
-                    <select name="product_id" id="selectProduct" class="form-control">
+                    <select name="product_id" id="selectProductModel" class="form-select">
                     @foreach ($product as $row)
                       <option value="{{$row->id }}">{{ $row->name}}</option>
                   @endforeach   
                 </select>
             </div>
            </div>
-            
-            
-             <div class="row m-2">
+           <div class="row m-2">
+            <div class="col-md-4">
+                <label for="" style="font-weight:bold">Stock</label>
+            </div>
+            <div class="col-md-8">
+                <select name="stock_id" id="stockEditModel" class="form-select">
+
+                </select>
+        </div>
+       </div>
+   <div class="row m-2">
                  <div class="col-md-4">
                     <label for="nameV" class="form-label fw-bold">Quantity</label>
                  </div>
@@ -252,14 +281,7 @@
                 <input type="text"  name="rate" id="pIrate" class="form-control mb-2 ">
             </div>
             </div>
-            <div class="row m-2">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Discount %</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text"  name="discount_percent" id="pIdiscount_percent" class="form-control mb-2 ">
-                </div>
-            </div>
+            
             <div class="row m-2">
                 <div class="col-md-4">
                     <label for="remarkV"  class="form-label fw-bold">Dis Amount</label>
@@ -287,17 +309,17 @@
   </div>
   <hr style="border-top:bold">
     {{-- {{ $purchase->invoice_number }} --}}
-      <form action="{{ route('purchase.save',['id'=>$purchase->id]) }}" method="POST">
+      <form  action ="{{ route('SalesItem.saveExtraCharge',['id'=>$sales->id]) }}" method="POST">
         @csrf
         <div class="row" >
 
-      <div class="col-md-4" >
+      {{-- <div class="col-md-4" >
         <label for="vat" class="fw-bold">VAT</label>
         <div class="input-group mb-3">
             <input type="text" class="form-control" name="vat" placeholder="Add Vat Amount" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <span class="input-group-text" id="basic-addon2"><i class="fa-solid fa-money-check-dollar"></i></span>
         </div>  
-        </div>
+        </div> --}}
         <div class="col-md-4">
           <label for="vat" class="fw-bold">Extra Charge</label>
           
@@ -317,7 +339,7 @@
 
 </div>
 
-@section('purchaseItem')
+@section('salesItem')
     <script>
 // select2
 $(document).ready(function(){
@@ -327,7 +349,29 @@ $(document).ready(function(){
        
       }
     );  
-   
+    $('body').on('click','.salesItemE',function(){//button press event, showcustomermodel is icon's class
+        const id = $(this).attr('id');  
+        // alert(id);  
+        $('#salesItemEdit').modal('toggle');   //showDetails is id of model
+        $.get("/salesItem/editData/"+id,function(data){
+            // console.log(data);
+            $('#selectProductModel').val(data.product_id);
+            $("#selectProductModel").select2(
+                        {
+                            theme:'bootstrap-5',
+                            dropdownParent:$('#salesItemEdit')
+                        }
+                    ).trigger('change'); 
+            
+            $('#pIid').val(data.id);
+            $('#pIquantity').val(data.quantity);
+            $('#stockEditModel').val(data.stock_id);
+            $('#pIrate').val(data.rate);
+            $('#pIdiscount_amount').val(data.discount_amount);
+           
+       });
+             
+    });
     
                   
     
@@ -354,11 +398,11 @@ $(document).ready(function(){
     }
   });
 
-  $('body').on('click','.dltItem',function(){
+  $('body').on('click','.dltSales',function(){
     var dlt_id = $(this).attr('id');
     $.ajax ( {
                         type:"DELETE",
-                        url:"/purchaseItem/delete/"+dlt_id,
+                        url:"/salesItem/delete/"+dlt_id,
                         data: {
                             "_token":$('input[name="_token"]').val(),//passing token for deleting
                             "id":dlt_id,
@@ -381,42 +425,54 @@ $(document).ready(function(){
     "paging": false,
     "bPaginate": false,
   });
-  $('body').on('click','.purchaseItemE',function(){//button press event, showcustomermodel is icon's class
-        var id = $(this).attr('id');    
-        $('#purchaseItemEdit').modal('toggle');   //showDetails is id of model
-        $.get("/purchaseItem/editData/"+id,function(data){
-            console.log(data);
-            $('#selectProduct').val(data.prod_id);
-            $("#selectProduct").select2(
-                        {
-                            theme:'bootstrap-5',
-                            dropdownParent:$('#purchaseItemEdit')
-                        }
-                    ).trigger('change'); 
-            
-            $('#pIid').val(data.id);
-            
-            $('#pIquantity').val(data.quantity);
-            $('#pIrate').val(data.rate);
-            $('#pIdiscount_percent').val(data.discount_percent);
-            $('#pIdiscount_amount').val(data.discount_amount);
-       });
-             
+
+$('#productSelect').change(function () {
+
+        var id=$(this).val();
+        $.ajax({
+            type: "GET",
+            url: "/salesItem/stockData/"+id,
+            data:{id},
+            success: function (data){
+                // console.log(data);
+                $('#stockDiv').show();
+                $('#stockDetails').empty();
+                $.each(data, function(index,stock){
+                    // console.log(stock);
+                    $('#stockDetails').append('<option data-rate="'+stock.sp+'" value="'+ stock.id + '">'+'Batch:-' + stock.batch_number + ' / '+'Qty:-'
+        + stock.quantity +' / ' +'Sp:- '+ stock.sp + '</option>')
+                })
+            }
+        })
     });
-   
+
+    $('#selectProductModel').change(function () {
+
+            var id=$(this).val();
+            $.ajax({
+                type: "GET",
+                url: "/salesItem/stockData/"+id,
+                data:{id},
+                success: function (data){
+                    // console.log(data);
+                    // $('#stockDiv').show();
+                    $('#stockEditModel').empty();
+                    $.each(data, function(index,stock){
+                        // console.log(stock);
+                        $('#stockEditModel').append('<option data-rate="'+stock.sp+'" value="'+ stock.id + '">'+'Batch:-' + stock.batch_number + ' / '+'Qty:-'
+            + stock.quantity +' / ' +'Sp:- '+ stock.sp + '</option>')
+                    })
+                }
+})
 });
 
 $(".alert").first().hide().slideDown(500).delay(4000).slideUp(500, function () {
             // document.getElementById('name').focus()
         $(this).remove();
         });
-
+    });
   
   
 </script>
 @endsection
-
-
-  
-
 @endsection

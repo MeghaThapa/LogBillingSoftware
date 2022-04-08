@@ -5,6 +5,7 @@ use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Models\Product;
 use DataTables;
+use App\Http\Requests\PurchaseItemRequest;
 use App\Models\PurchaseItem;
 use App\Models\Stock;
 
@@ -35,6 +36,7 @@ class PurchaseItemController extends Controller
        ->join('products','products.id','=','purchase_items.product_id' )
        ->select('purchase_items.id','purchase_items.quantity','purchase_items.rate','purchase_items.amount','purchase_items.discount_percent','purchase_items.discount_amount','products.name','products.unit')
        ->get();
+    //    return $purchaseItem;
 
         return view('purchaseItem.index',['purchase'=>$purchase,'product'=>$product,'purchaseItem'=>$purchaseItem]);
     }
@@ -108,15 +110,20 @@ class PurchaseItemController extends Controller
         //
     }
     
-    public function saveData(Request $request, $id){
-        
+    public function saveData(PurchaseItemRequest $request, $id){
+        // if($request->rate > $request->sp){
+            
+        //     return back()->withFail(['Sp should be greater that rate(cp).']);
+        // }
+        // return $request;
        $purchaseItem= new PurchaseItem();
         $purchaseItem->store($request,$id,$purchaseItem);
         $stock= new Stock();
         $stock->batch_number=time();
         $stock->quantity=$purchaseItem->quantity;
-        $stock->cp=$purchaseItem->amount;
+        $stock->cp=$purchaseItem->rate;
         $stock->sp=$request->spA;
+        $stock->product_id = $request->product_id;
         $stock->purchase_items_id=$purchaseItem->id;
         $stock->save();
        return back();

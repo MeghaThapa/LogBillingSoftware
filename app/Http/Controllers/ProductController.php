@@ -84,7 +84,7 @@ class ProductController extends Controller
        $product->unit= $request->unit;
        $product->product_type= $request->pType;
        $product->status=$request->status;
-       $product->remark= $request->remark;
+       $product->remark= empty($request->remark)? null:$request->remark;
        $product->save();
        return redirect()-> route('product.index');
     }
@@ -170,7 +170,7 @@ class ProductController extends Controller
         $value->name=$request->name;
         $value->unit=$request->unit;
         $value->product_type=$request->pType;
-        $value->status=$request->status;
+        $value->status=empty($request->remark)? null:$request->remark;
         $value->save();
         return back();
       

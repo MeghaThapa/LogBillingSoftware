@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('unit');
             $table->enum('product_type',['SALES','SERVICE']);
             $table->enum('status',['ACTIVE','INACTIVE']);
-            $table->string('remark');
+            $table->string('remark')->nullable();
              // softdelete,timestamp and userstamp
              $table->unsignedBigInteger('created_by')->nullable();
              $table->foreign('created_by')->references('id')->on('users');

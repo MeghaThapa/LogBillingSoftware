@@ -60,7 +60,7 @@
    <div class="row">
         <label for="validationCustom04" class="form-label fw-bold">Phone No 2</label>
       <div>
-        <input type="number"class="form-control"name="contact_no_2" id ="validationCustom04" >
+        <input type="number"class="form-control"name="contact_no_2"  >
       </div>
         {{-- <div class="invalid-feedback">
           Please enter your contact no!!

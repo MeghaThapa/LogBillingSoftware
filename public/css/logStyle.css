@@ -15,3 +15,43 @@ table.logTable{
     text-align: center;
     font-size:16px;
     }
+
+    .test {
+        background: white;
+        color: #000000;
+        font-size: 22px;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .test span {
+        float: left;
+        width: 5em;
+        text-align: left;
+    }
+    table.stockTable{
+    width: 100%;
+    border-collapse: collapse;
+    }
+    table.stockTable th {
+    border:2px #000000;
+    border-collapse:collapse;
+    border-style: dashed dashed;
+    }
+    .table.stockTable td,.table.stockTable th {
+    padding:10px 15px;
+    border:2px #000000;
+    border-collapse:collapse;
+    border-style: dashed none ;
+    text-align: center;
+    font-size:16px;
+    }
+    
+    .amount{
+        float:right ;
+    margin-right:50px;
+    margin-top: 20px;
+    }
+    #words{
+    margin-left:100px;
+    }

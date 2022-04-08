@@ -40,7 +40,6 @@ class CustomerController extends Controller
             'name' =>'required|max: 255',
             'address'=>'required|max: 255',
             'contact_no_1'=>'required|max: 10|min:10',
-            'contact_no_2'=>'max:10|min:10'
         ]);
         $customer= new Customer;
         $customer->name= $request->name;

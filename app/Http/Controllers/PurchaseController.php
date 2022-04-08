@@ -184,7 +184,6 @@ class PurchaseController extends Controller
         $purchase->storeData($purchase,$request);
 
         $setting = Setting::get()->first();
-
         $setting->purchase_bill_number= $setting->purchase_bill_number+1;
         
         $setting->save();

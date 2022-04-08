@@ -155,7 +155,44 @@
                                     <a class="nav-link" href="{{ route('user.create') }}">Add User</a>
                                 </nav>
                             </div>
-                            
+                            {{-- order --}}
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#order" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                                Orders
+                                <div class="sb-sidenav-collapse-arrow"><svg class="svg-inline--fa fa-angle-down fa-w-10" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"></path></svg><!-- <i class="fas fa-angle-down"></i> Font Awesome fontawesome.com --></div>
+                            </a>
+                            <div class="collapse" id="order" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ route('order.index') }}">Order Dashboard</a>
+                                    <a class="nav-link" href="{{ route('order.create') }}">Add Order</a>
+                                </nav>
+                            </div>
+
+                            {{-- sales --}}
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#sales" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                                Sales
+                                <div class="sb-sidenav-collapse-arrow"><svg class="svg-inline--fa fa-angle-down fa-w-10" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"></path></svg><!-- <i class="fas fa-angle-down"></i> Font Awesome fontawesome.com --></div>
+                            </a>
+                            <div class="collapse" id="sales" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link">Sale Dashboard</a>
+                                    <a class="nav-link" href="{{ route('sale.create') }}">Add Sales</a>
+                                </nav>
+                            </div>
+                            {{-- sales Return --}}
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#salesReturn" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                                Sales Return
+                                <div class="sb-sidenav-collapse-arrow"><svg class="svg-inline--fa fa-angle-down fa-w-10" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"></path></svg><!-- <i class="fas fa-angle-down"></i> Font Awesome fontawesome.com --></div>
+                            </a>
+                            <div class="collapse" id="salesReturn" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link">Sale Return Dashboard</a>
+                                    <a class="nav-link" href="{{ route('salesReturn.create') }}">Add Sales Return</a>
+                                </nav>
+                            </div>
+                             
                             {{-- Reports --}}
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fa fa-file" aria-hidden="true"></i></div>
@@ -272,5 +309,10 @@
         @yield('purchaseItem')
         @yield('purchaseTrash')
         @yield('Stock')
+        @yield('order')
+        @yield('printLayout')
+        @yield('serviceItem')
+        @yield('salesItem')
+        @yield('salesItemReturn')
 </body>
 </html>

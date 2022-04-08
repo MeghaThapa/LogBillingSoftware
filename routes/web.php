@@ -5,7 +5,15 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\ServiceItemController;
+use App\Http\Controllers\SalesItemController;
+use App\Http\Controllers\SalesReturnController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SalesItemReturnController;
+
 
 use App\Http\Controllers\PurchaseItemController;
 
@@ -91,6 +99,40 @@ Route::get('/stock/stockData', [StockController::class, 'stockData'])->name('sto
 
 Route::resource('stock', StockController::class);
 
+Route::get('/order/serviceItem/{id}', [OrderController::class, 'serviceItem'])->name('order.serviceItem')->middleware('auth');
+Route::get('/order/downloadPdf/{id}', [OrderController::class, 'downloadPdf'])->name('order.downloadPdf')->middleware('auth');
+Route::get('/order/printLayout/{id}', [OrderController::class, 'printLayout'])->name('order.printLayout')->middleware('auth');
+Route::get('/order/ajaxTableData', [OrderController::class, 'ajaxTableData'])->name('order.ajaxTableData')->middleware('auth');
+Route::get('/order/orderBill/{id}', [OrderController::class, 'orderBill'])->name('order.orderBill')->middleware('auth');
+Route::post('/order/saveAdvanceP/{id}', [OrderController::class, 'saveAdvanceP'])->name('order.saveAdvanceP')->middleware('auth');
+Route::resource('order', OrderController::class);
 
+Route::get('/OrderItem/Index/{id}', [OrderItemController::class, 'index'])->name('OrderItem.index')->middleware('auth');
+Route::post('/OrderItem/save/{id}', [OrderItemController::class, 'save'])->name('OrderItem.save')->middleware('auth');
 
+Route::post('/ServiceItem/save/{id}', [ServiceItemController::class, 'save'])->name('ServiceItem.save')->middleware('auth');
+Route::get('/ServiceItem/stockData/{id}', [ServiceItemController::class, 'stockData'])->name('ServiceItem.stockData')->middleware('auth');
+Route::get('/ServiceItem/editData/{id}', [ServiceItemController::class, 'editData'])->name('ServiceItem.editData')->middleware('auth');
+Route::post('/ServiceItem/save/{id}', [ServiceItemController::class, 'save'])->name('ServiceItem.save')->middleware('auth');
+Route::post('/ServiceItem/saveEdit', [ServiceItemController::class, 'saveEdit'])->name('serviceItem.saveEdit')->middleware('auth');
+Route::delete('/ServiceItem/delete/{id}', [ServiceItemController::class, 'delete'])->name('serviceItem.delete')->middleware('auth');
 
+Route::get('/ServiceItem/completeItem/{id}', [ServiceItemController::class, 'completeItem'])->name('serviceItem.completeItem')->middleware('auth');
+
+Route::get('/salesItem/stockData/{id}', [SalesItemController::class, 'stockData'])->name('SalesItem.stockData')->middleware('auth');
+
+Route::get('/salesItem/index/{id}', [SalesItemController::class, 'index'])->name('SalesItem.index')->middleware('auth');
+Route::post('/salesItem/save/{id}', [SalesItemController::class, 'save'])->name('SalesItem.save')->middleware('auth');
+Route::post('/salesItem/saveExtraCharge/{id}', [SalesItemController::class, 'saveExtraCharge'])->name('SalesItem.saveExtraCharge')->middleware('auth');
+Route::get('/salesItem/editData/{id}', [SalesItemController::class, 'editData'])->name('SalesItem.editData')->middleware('auth');
+Route::post('/salesItem/editSave', [SalesItemController::class, 'editSave'])->name('SalesItem.editSave')->middleware('auth');
+Route::delete('/salesItem/delete/{id}', [SalesItemController::class, 'delete'])->name('SalesItem.delete')->middleware('auth');
+
+Route::resource('sale', SaleController::class);
+
+Route::post('/salesReturn/netAmountSave/{id}', [SalesReturnController::class, 'netAmountSave'])->name('SalesReturn.netAmountSave')->middleware('auth');
+
+Route::resource('salesReturn', SalesReturnController::class);
+Route::get('/salesItemReturn/index/{id}', [SalesItemReturnController::class, 'index'])->name('SalesItemReturn.index')->middleware('auth');
+Route::post('/salesItemReturn/save/{id}', [SalesItemReturnController::class, 'save'])->name('SalesItemReturn.save')->middleware('auth');
+Route::delete('/salesItemReturn/delete/{id}', [SalesItemReturnController::class, 'delete'])->name('SalesItemReturn.delete')->middleware('auth');

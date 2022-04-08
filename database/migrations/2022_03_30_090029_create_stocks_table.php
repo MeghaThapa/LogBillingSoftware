@@ -19,7 +19,10 @@ class CreateStocksTable extends Migration
             $table->unsignedBigInteger('quantity');
             $table->string('cp');
             $table->string('sp');
-            $table->foreignId('purchase_items_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained();
+
+            $table->foreignId('purchase_items_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('order_items_id')->nullable()->constrained()->cascadeOnDelete();
             $table->enum('status',['ACTIVE','INACTIVE']);
             $table->timestamps();
             

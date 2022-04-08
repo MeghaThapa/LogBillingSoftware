@@ -2,12 +2,11 @@
 @section('content')
 <div class="container-fuild">
 <div class="card card-body shadow ">
- 
 <div class="row">
     
         <div class="row">
             <div class="col-md-3">
-                <label style="font-weight:bold;font-size:25px;font-family: 'Fredoka', sans-serif;">PURCHASE INVOICE </label>
+                <label style="font-weight:bold;font-size:25px;font-family: 'Fredoka', sans-serif;">ORDER INVOICE </label>
             </div>
             <div class="col-md-6"></div>
           
@@ -25,19 +24,20 @@
 <div class="row">
     <div class="col-md-4">
         <label class="fw-bold">
-            BILL FROM :
+            BILL To :
         </label>
-        {{$purchase->name}}
+       {{ $order->name }}
+       
         <br/>
         <label class="fw-bold">
             ADDRESS:
         </label>
-        {{ $purchase->address }}
+        {{ $order->address }}
         <br/>
         <label class="fw-bold">
             INVOICE NUMBER:
         </label>
-        {{ $purchase->invoice_number }}
+        {{ $order->invoice_number }}
         <br/>
     </div>      
 <div class="col-md-4"></div>
@@ -45,26 +45,19 @@
     <label class="fw-bold">
         BILL DATE: 
     </label>
-    {{ $purchase->bill_date }}
+    {{ $order->transaction_date }}
     <br/>
     <label class="fw-bold">
-        TRANSACTION DATE:
+        DELIVERY DATE:
     </label>
-    {{ $purchase->transaction_date }}
+    {{ $order->delivery_date }}
     <br/>
 
 
 </div>
 </div>
 <br>
-@if($errors->any())
-<div class="alert alert-danger" role="alert">
-@foreach($errors->all() as $error)
-<li>{{ $error }}</li>
-@endforeach
-</div>
-@endif
-<form action={{route('purchaseItem.saveData',['id'=>$purchase->id ]) }} class="needs-validation" method="POST" novalidate>
+<form  action="{{ route('OrderItem.save',['id'=>$order->id])}}" class="needs-validation" method="POST" novalidate>
     @csrf
     
     <div class="row">  
@@ -106,10 +99,6 @@
         <div class="col-md-3">
             <label for="validationDiscountA" class="form-label fw-bold ">Discount Amount</label> 
             <input type="number" name="discountA"  id="DiscountA"  class="form-control" />
-        </div>
-        <div class="col-md-3">
-            <label for="sp" class="form-label fw-bold ">Selling Amount</label> 
-            <input type="number" name="spA"  id="sp"  class="form-control" />
         </div>
         
     <div class="row mt-3">
@@ -156,7 +145,7 @@
         @php
             $i=0;
         @endphp
-        @foreach ($purchaseItem as $row )
+        @foreach ($tableData as $row )
                 <tr>
                     <td>{{ ++$i }}</td>
                     <td>{{ $row->name }}</td>
@@ -168,11 +157,11 @@
                     <td>{{ $row->discount_amount }}</td>
                     <td>
                      <a id="{{$row->id}}" class="purchaseItemE">
-                         <i class="fas fa-user-edit fa-lg "></i>
+                         <i style="color:purple" class="fas fa-user-edit fa-lg "></i>
                      </a>
                 &#160
             <a class="dltItem" id="{{ $row->id }}">
-                <i class="fas fa-trash-alt fa-lg">  </i>
+                <i style= "color:red"class="fas fa-trash-alt fa-lg">  </i>
             </a>
                     </td>
                 </tr>
@@ -185,17 +174,17 @@
             <table>
                 <tr>
                     <td class="fw-bold">Total Amount:</td>
-                    <td class="fw-bold">Rs.{{ $purchaseItem->sum('amount') }}</td>  
+                    <td class="fw-bold">Rs.{{ $tableData->sum('amount') }}</td>  
                 </tr>
                
                 <tr>
                     <td class="fw-bold"> Total Discount:</td>
-                   <td class="fw-bold">Rs.{{ $purchaseItem->sum('discount_amount') }}</td>
+                   <td class="fw-bold">Rs.{{ $tableData->sum('discount_amount') }}</td>
                 </tr>
                 
                 <tr>
                     <td class="fw-bold"> Payable Amount:</td>
-                   <td class="fw-bold">Rs.{{ $purchaseItem->sum('amount') - $purchaseItem->sum('discount_amount') }}</td>
+                   <td class="fw-bold">Rs.{{ $tableData->sum('amount') - $tableData->sum('discount_amount') }}</td>
                 </tr>
             </table>
         </div>
@@ -203,19 +192,19 @@
 </div>
 
 {{-- edit modal --}}
-<div class="modal fade" id="purchaseItemEdit"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="orderItemEdit"  aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
             
           <h5 class="modal-title" id="exampleModalLabel">
-         Edit Purchase Items
+         Edit Order Items
         </h5>
     
     
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="{{route('purchaseItem.updateSave') }}" method="POST">
+        <form  method="POST">
             @csrf
            
         <div class="modal-body">
@@ -227,9 +216,9 @@
                    <label for="nameV" class="form-label fw-bold">Product Name</label>
                 </div>
                 <div class="col-md-8">
-                    <select name="product_id" id="selectProduct" class="form-control">
+                    <select name="product_id"  class="form-control">
                     @foreach ($product as $row)
-                      <option value="{{$row->id }}">{{ $row->name}}</option>
+                      <option value="{{$row->id }} " id="selectProduct" >{{ $row->name}}</option>
                   @endforeach   
                 </select>
             </div>
@@ -287,26 +276,19 @@
   </div>
   <hr style="border-top:bold">
     {{-- {{ $purchase->invoice_number }} --}}
-      <form action="{{ route('purchase.save',['id'=>$purchase->id]) }}" method="POST">
+      <form action="{{ route('order.saveAdvanceP',['id'=>$order->id]) }}" method="POST">
         @csrf
         <div class="row" >
 
       <div class="col-md-4" >
-        <label for="vat" class="fw-bold">VAT</label>
+        <label for="vat" class="fw-bold">Advance payment</label>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" name="vat" placeholder="Add Vat Amount" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <input type="text" class="form-control" name="advance_payment" placeholder="Add Advance Payment " aria-label="Recipient's username" aria-describedby="basic-addon2">
             <span class="input-group-text" id="basic-addon2"><i class="fa-solid fa-money-check-dollar"></i></span>
         </div>  
         </div>
-        <div class="col-md-4">
-          <label for="vat" class="fw-bold">Extra Charge</label>
-          
-          <div class=" input-group mb-3">
-              <input type="text" class="form-control" name="extraCharge" placeholder="Add Extra Charges" aria-label="Recipient's username" aria-describedby="basic-addon2">
-              <span class="input-group-text" id="basic-addon2"><i class="fa-solid fa-money-check-dollar"></i></span>
-            </div>
-        </div>
-      <div class="col-md-4 mt-4">
+
+      <div class="col-md-8 mt-4">
           
         <button type= "submit"class="btn btn-primary"> Save</button>
     
@@ -383,10 +365,11 @@ $(document).ready(function(){
   });
   $('body').on('click','.purchaseItemE',function(){//button press event, showcustomermodel is icon's class
         var id = $(this).attr('id');    
-        $('#purchaseItemEdit').modal('toggle');   //showDetails is id of model
+        $('#orderItemEdit').modal('toggle');   //showDetails is id of model
         $.get("/purchaseItem/editData/"+id,function(data){
             console.log(data);
             $('#selectProduct').val(data.prod_id);
+            // $('#product').val(data.name);
             $("#selectProduct").select2(
                         {
                             theme:'bootstrap-5',
@@ -405,11 +388,7 @@ $(document).ready(function(){
     });
    
 });
-
-$(".alert").first().hide().slideDown(500).delay(4000).slideUp(500, function () {
-            // document.getElementById('name').focus()
-        $(this).remove();
-        });
+// model
 
   
   
